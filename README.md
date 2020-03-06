@@ -13,11 +13,13 @@ aabilio (https://stackoverflow.com/users/1715957/aabilio). "Flask, how to return
 
 dcode. "Sending JSON with AJAX/XMLHttpRequest - JavaScript Tutorial". Youtube, https://www.youtube.com/watch?v=mNrJDGfQGz0
 
-"Fetch API." MDN Web Docs, Mozilla Developer Network, https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+"Fetch API". MDN Web Docs, Mozilla Developer Network, https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 
-"WindowOrWorkerGlobalScope.fetch()." MDN Web Docs, Mozilla Developer Network, https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+"HTML canvas rect() Method". W3Schools, https://www.w3schools.com/tags/canvas_rect.asp
 
 Hazel Campbell (https://github.com/hazelybell) 2019. ObserverExampleAjax, uofa-cmput404. URL: https://github.com/uofa-cmput404/cmput404-slides/tree/master/examples/ObserverExampleAJAX
+
+"WindowOrWorkerGlobalScope.fetch()." MDN Web Docs, Mozilla Developer Network, https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
 
 Contributors / Licensing
 ========================
