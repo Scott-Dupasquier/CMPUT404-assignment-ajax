@@ -79,6 +79,20 @@ function drawCircle(context,entity) {
     }
 }
 
+function drawSquare(context,entity) {
+    with(context) {
+        beginPath();              
+        lineWidth = 2;
+        var x = entity["x"];
+        var y = entity["y"];
+        // moveTo(x,y);
+        fillStyle = entity["colour"];
+        strokeStyle = fillStyle;
+        rect(x-11, y-11, 22, 22);  
+        stroke();                                
+    }
+}
+
 function prepEntity(entity) {
     if (!entity["colour"]) {
         entity["colour"] = "#FF0000";
@@ -102,8 +116,13 @@ function clearFrame() {
 function renderFrame() {
     clearFrame();
     for (var key in world) {
-        var entity = world[key];
-        drawCircle(context,prepEntity(entity));
+        var entity = prepEntity(world[key]);
+
+        if (entity["shape"] == "circle") {
+            drawCircle(context,entity);
+        } else {
+            drawSquare(context,entity);
+        }
     }
 }
 
@@ -265,16 +284,16 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'green', 'shape':'square'});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'red', 'shape':'square'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
     addEntityWithoutName({'x':x,'y':y,'colour':'white',
-                          'radius':10});
+                          'radius':1, 'shape':'circle'});
 });
 
 
@@ -286,9 +305,15 @@ function update() {
     });
     fetch(request)
     .then( (response) => {
-        return response.json(); // Convert response data into json format
+        if (response.status == 200) {
+            return response.json(); // Convert response data into json format
+        }
     })
     .then( (data) => {
+        // Re-initialize object if clear was used
+        if (Object.keys(data).length == 0) {
+            world = {};
+        }
         for (let updated_entity in data) {
             // Now update the world dictionary
             world[updated_entity] = data[updated_entity];
