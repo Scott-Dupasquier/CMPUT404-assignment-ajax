@@ -146,16 +146,22 @@ function getPosition(e) {
 function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
-    //XXX: Send a XHTML Request that updates the entity you just  modified!                                                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // URL is localhost:5000/entity/entity_id. Objects param will be the data we're given
-    let request = new Request("http://localhost:5000/entity/" + String(entity), {body: JSON.stringify(data)});
-    let promise = fetch(request);
-    // sendJSONXMLHTTPRequest("http://localhost:5000/entity/" + String(entity), json.stringify(data), null);
+    //XXX: Send a XHTML Request that updates the entity you just  modified!
+
+    // Make the request object
+    let request = new Request("http://localhost:5000/entity/" + String(entity), {
+        method: 'POST',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    });
+
+    // Fetch the request
+    fetch(request);
 }
 
 var counter = 0;
 function addEntityWithoutName(data) {
-    //var name = "X"+Math.floor((Math.random()*100)+1);
+    // var name = "X"+Math.floor((Math.random()*100)+1);
     var name = "X"+(counter++)%100;
     addEntity(name,data);
 }
@@ -257,7 +263,7 @@ mouse = (function() {
 })();
 
 // Add the application specific mouse listeners!
-//XXX: TODO Make these prettier!                                                                                    ####################################
+//XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
     addEntityWithoutName({'x':x,'y':y,'colour':'green'});
 });
@@ -273,10 +279,23 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 
 function update() {
-    //XXX: TODO Get the world from the webservice using a XMLHTTPRequest                                            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    let request = new Request("http://localhost:5000/world");
-    let promise = fetch(request);
-    // sendJSONXMLHTTPRequest("http://localhost:5000/world", null, None);
+    //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    // Make a request for the world data
+    let request = new Request("http://localhost:5000/world", {
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    });
+    fetch(request)
+    .then( (response) => {
+        return response.json(); // Convert response data into json format
+    })
+    .then( (data) => {
+        for (let updated_entity in data) {
+            // Now update the world dictionary
+            world[updated_entity] = data[updated_entity];
+        }
+    });
+
+    drawNextFrame();
     drawFrame();
 }
 
